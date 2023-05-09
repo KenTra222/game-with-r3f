@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import {useRef, useState, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { RigidBody } from '@react-three/rapier'
+import { RigidBody, CuboidCollider } from '@react-three/rapier'
 import { useGLTF } from '@react-three/drei'
 
 THREE.ColorManagement.legacyMode = false
@@ -161,6 +161,9 @@ export const BlockEnd = ({ position = [ 0, 0, 0 ]}) =>
 
  function Bounds({ length=1}){
   return<>
+
+<RigidBody type="fixed" restitution={ 0.2 } friction={ 0 }>
+
   {/* right wall */}
     <mesh
       position={ [ 2.15, .75, - (length * 2) + 2 ] }
@@ -171,9 +174,24 @@ export const BlockEnd = ({ position = [ 0, 0, 0 ]}) =>
   {/* left wall */}
 <mesh
       position={ [ -2.15, .75, - (length * 2) + 2 ] }
-       geometry={boxGeometry} 
+      geometry={boxGeometry} 
        scale={[0.3, 1.5, 4 *length]}
+       receiveShadow
        />
+
+<mesh
+            position={ [ 0, 0.75, - (length * 4) + 2] }
+            geometry={ boxGeometry }
+            material={ wallMaterial }
+            scale={ [ 4, 1.5, 0.3 ] }
+            receiveShadow
+        />
+        {/* floor bounds */}
+         <CuboidCollider 
+          // mathches the floor
+          args={ [ 2, 0.1, 2 * length ] } 
+          position={ [ 0, -0.1, - (length * 2) + 2 ] }/>
+            </RigidBody>
   </>
 }
 
