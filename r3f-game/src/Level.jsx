@@ -191,6 +191,10 @@ export const BlockEnd = ({ position = [ 0, 0, 0 ]}) =>
           // mathches the floor
           args={ [ 2, 0.1, 2 * length ] } 
           position={ [ 0, -0.1, - (length * 2) + 2 ] }/>
+           <CuboidCollider 
+          // mathches the floor
+          args={ [ 4, 0.1, 2 * length ] } 
+          position={ [ 0, 2 , - (length * 2) + 2 ] }/>
             </RigidBody>
   </>
 }
