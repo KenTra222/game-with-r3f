@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { useKeyboardControls } from '@react-three/drei'
 import { RigidBody, useRapier } from '@react-three/rapier'
+import useGame from './stores/useGame'
 
 const Player = () => {
 
@@ -10,7 +11,9 @@ const Player = () => {
   const [smoothCameraPosition] = useState(()=> new THREE.Vector3(10, 10, 10))
   const [smoothCameraTarget] = useState(()=> new THREE.Vector3())
 
-
+  const start = useGame((state) => state.start)
+  const end = useGame((state)=>  state.end)
+  const blocksCount = useGame((state) => state.blocksCount)
 
   //gets the keys state
   const [subscribeKeys, getKeys] = useKeyboardControls()
@@ -87,6 +90,14 @@ const Player = () => {
     //attaches impulse and torque to the player
     body.current.applyImpulse(impulse)
     body.current.applyTorqueImpulse(torque)
+
+    /**
+     * phases
+     */
+
+    if (bodyPosition.z < - (blocksCount * 4 + 2) ){
+      console.log('we are at the end of the level')
+    }
   })
 
   //jump function
@@ -111,12 +122,7 @@ const Player = () => {
         {
         body.current.applyImpulse({x:0, y: 0.5, z: 0})
 
-        }
-
-        return () =>
-    {
-      unsubscribeJump()
-    }
+        }       
     }
 
   //makes the player jump
@@ -130,6 +136,16 @@ const Player = () => {
           if(value)
             jump()
         })
+
+        const unsubscribeAny = subscribeKeys(()=>{
+          start()
+        })
+
+        return () =>
+        {
+          unsubscribeJump()
+          unsubscribeAny()
+        }
   }, [])
 
 

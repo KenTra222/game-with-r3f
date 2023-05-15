@@ -9,7 +9,7 @@ const Interface = () => {
     const rightward = useKeyboardControls((state) => state.rightward)
     const jump = useKeyboardControls((state) => state.jump)
 
-    console.log(forward,backward,leftward,rightward,jump);
+    
 
 
   return <div className='interface'>

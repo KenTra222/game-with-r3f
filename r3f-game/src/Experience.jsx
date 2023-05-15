@@ -6,8 +6,8 @@ import Player from './Player.jsx'
 import useGame from './stores/useGame.jsx'
 
 export default function Experience()
-
 {
+    const blocksCount = useGame((state) => state.blocksCount)
     return <>
 
         {/* <OrbitControls makeDefault /> */}
@@ -16,7 +16,7 @@ export default function Experience()
              
             <Lights />
             <Player/>
-            <Level/>
+            <Level count={blocksCount}/>
         </Physics>
 
     </>

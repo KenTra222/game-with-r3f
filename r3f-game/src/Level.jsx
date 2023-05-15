@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { RigidBody, CuboidCollider } from '@react-three/rapier'
 import { useGLTF } from '@react-three/drei'
 
-THREE.ColorManagement.legacyMode = false
+//THREE.ColorManagement.legacyMode = false
 
 //geometry
 const boxGeometry = new THREE.BoxGeometry(1,1,1)
