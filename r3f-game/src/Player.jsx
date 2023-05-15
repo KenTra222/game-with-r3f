@@ -13,6 +13,7 @@ const Player = () => {
 
   const start = useGame((state) => state.start)
   const end = useGame((state)=>  state.end)
+  const reset = useGame((state) => state.reset)
   const blocksCount = useGame((state) => state.blocksCount)
 
   //gets the keys state
@@ -21,9 +22,7 @@ const Player = () => {
   //references the player
   const body = useRef()
 
-  //Rapier hook
   const { rapier, world } = useRapier()
-  //actual rapier world
   const rapierWorld = world.raw()
 
 
@@ -95,9 +94,14 @@ const Player = () => {
      * phases
      */
 
-    if (bodyPosition.z < - (blocksCount * 4 + 2) ){
-      console.log('we are at the end of the level')
+    if (bodyPosition.z < -(blocksCount * 4 + 2) ){
+      end()
     }
+
+    if( bodyPosition.y < -4 ){
+      reset()
+    }
+
   })
 
   //jump function
@@ -125,8 +129,23 @@ const Player = () => {
         }       
     }
 
+    const restart = () =>{
+      body.current.setTranslation({ x: 0, y : 1, z: 0})
+      body.current.setLinvel({x:0, y:0, z:0})
+      body.current.setAngvel({x:0, y: 0, z: 0})
+    }
+
   //makes the player jump
   useEffect(()=>{
+
+    const unsubscribeReset = useGame.subscribe(
+      (state) => state.phase,
+      (value) =>{
+        if(value === 'ready'){
+          restart()
+        }
+      },
+    )
 
     //takes 2 functions 1st to return the state, 2nd to get the values
     const unsubscribeJump = subscribeKeys(
@@ -145,6 +164,7 @@ const Player = () => {
         {
           unsubscribeJump()
           unsubscribeAny()
+          unsubscribeReset()
         }
   }, [])
 
