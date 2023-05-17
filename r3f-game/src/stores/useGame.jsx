@@ -5,23 +5,26 @@ export default create(subscribeWithSelector((set) =>
 {
     return {
         blocksCount: 3,
+        blocksSeed: 0,
 
         // Phases
         phase: 'ready',
+
+        startTime: 0,
+        endTime: 0,
 
         start: () => 
         {
             set((state)=>
             {
                 if(state.phase === 'ready')
-                return {phase : 'playing'}
+                return {phase : 'playing', startTime: Date.now()}
                 return {}
             })
         },
 
         reset: () => 
         {
-            console.log('dammnnnnnnn it');
             set(( state)=>
             {
                 if(state.phase === 'playing' || state.phase === 'ended')
@@ -36,9 +39,11 @@ export default create(subscribeWithSelector((set) =>
             set((state)=>
             {
                 if(state.phase === 'playing')
-                return {phase : 'ended'}
+                return {phase : 'ended' , endTime: Date.now()}
                 return{}
             })
         },
+
+        
     }
 }))

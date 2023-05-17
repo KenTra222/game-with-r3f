@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState} from 'react'
 import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
+import {  useFrame } from '@react-three/fiber'
 import { useKeyboardControls } from '@react-three/drei'
 import { RigidBody, useRapier } from '@react-three/rapier'
 import useGame from './stores/useGame'
@@ -138,6 +138,8 @@ const Player = () => {
   //makes the player jump
   useEffect(()=>{
 
+    
+
     const unsubscribeReset = useGame.subscribe(
       (state) => state.phase,
       (value) =>{
@@ -165,6 +167,7 @@ const Player = () => {
           unsubscribeJump()
           unsubscribeAny()
           unsubscribeReset()
+         
         }
   }, [])
 
